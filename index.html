@@ -8,6 +8,13 @@
   <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,400i,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
   <link rel="stylesheet" href="./assets/css/style.css" />
+  <link rel="stylesheet" href="./assets/css/style.css" />
+      <!-- Link the DayJS library -->
+      <script
+      src="https://cdn.jsdelivr.net/npm/dayjs@1.11.3/dayjs.min.js"
+      integrity="sha256-iu/zLUB+QgISXBLCW/mcDi/rnf4m4uEDO0wauy76x7U="
+      crossorigin="anonymous"
+    ></script>
   <title>Weather Dashboard</title>
 </head>
 
@@ -22,28 +29,34 @@
  
         <form id="city-form" class="form-body">
             <h2 class="form-header">Search for a City</h2>
-            <input name="cityname" id="cityname" type="text" autofocus="true" class="form-input" />
-            <button type="submit" class="btn">Search</button>
+            <input 
+            id="cityname" 
+            type="text" 
+            class="form-input"
+            placeholder="San Diego" />
+
+            <button type="submit" id="searchbtn" class="btn btn-blue">Search</button>
         </form>
 
-        <ul id="city-list" class="list-body">
+        <div id="city-list" class="list-body">
 
-        </ul>
+        </div>
     </div>
 
-    <div class="col-12 col-md-9">
+    <div id = "weathercontainer" class="col-12 col-md-9">
         <div id="city-today">
             <h2 class="city-today-header"><span id="city-today-name"></span></h2>
             <ul id="weather-today" class="list-weather"></ul>
         </div>
         <div id="city-today">
             <h3 class="5day-header"></h3>
-            <div id="5day-cards", class="col-12 col-md-1">
-            </div>
+            <ul id="5day-cards", class="col-12 col-md-1">
+            </ul>
         </div>
     </div>
   </main>
 
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script src="./assets/js/script.js"></script>
 </body>
 
