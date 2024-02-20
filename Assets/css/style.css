@@ -1,10 +1,10 @@
 :root {
     
-    --light-grey: #9caea9;
+    --light-grey: #c7c7c7;
     --tertiary: #788585;
     --light-blue: #47a1f0;
     --dark-blue: #0b477c;
-    --dark: #38302e;
+    --dark: #343434;
     --border-radius: .3rem;
     
   }
@@ -28,7 +28,7 @@
   }
   
   
-  h3,
+  
   h4,
   h5,
   h6 {
@@ -43,9 +43,10 @@
     width: 94%;
   }
   
-  p {
-    font-size: 1.2rem;
-  }
+  
+
+  h3 {
+    font-size: 1.8rem;}
 
 /* FORM */
 .form-header,
@@ -65,7 +66,6 @@
     margin: 10px 0;
     font-size: 1.2rem;
     border-radius: var(--border-radius);
-
 }
   
 .btn {
@@ -107,9 +107,19 @@
 
    /* CITYTODAY CONTAINER */
 
+.city-today-border{
+    border-style: solid;
+    border-width: 3px;
+    border-color: #38302e;}
+
+#city-today{
+    padding-left: 2rem;
+    padding-bottom: 2rem;
+}
+
 .city-today-header{
     font-size: 2.1rem;
-    margin: 0 0 0 5px;
+   
 }
 
 .list-weather{
@@ -117,25 +127,36 @@
     margin: 15px 0;
 }
 
+.icon-today{
+    width: 7%;
+    
+}
+
   /* 5DAY-CARDS */
   .card {
-    margin: 0 0 20px 0;
+    margin: 0 0 0 0;
     border: 1px solid var(--dark);
+    background-color: var(--dark);
+    color:white;
     border-radius: var(--border-radius);
+    font-size:0.8rem;
+    padding: 1.4rem;
   }
-  
-  .card-header {
+#date-five-header{
+    color: white;
+    font-weight: bold;
+}
+
+.icon-fiveday {
+    width: 60%;
+}
+  /* .card-header {
     color: var(--primary);
     background-color: var(--dark);
+    color: white;
     padding: 2.5%;
     border-radius: calc(.18rem - 1px) calc(.18rem - 1px) 0 0;
-  }
-  
-  .card-body {
-    padding: 2.5%;
-  }
-  
-
+  } */
   
   /* HEIGHT / WIDTH UTILS */
   .min-100-vh {

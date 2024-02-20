@@ -26,7 +26,7 @@ function PrintCityNames(){
     
       var city = $("<button>");
       city.attr("id", cityNames[i]);
-      city.addClass("btn", "btn-grey");
+      city.addClass("btn btn-grey");
       cityListEl.append(city);
       city.text(cityNames[i]);
   
@@ -42,6 +42,9 @@ function saveCityToLocalstorage(cityName){
 }
 
 function printWeatherCurrent(name ,lat, lon){
+  cityTodayName.text("");
+  $('#weather-today').empty();
+  $('.icon').remove();
 
   var currentApi = 'https://api.openweathermap.org/data/2.5/weather?lat=' 
   + lat + '&lon=' + lon + '&appid=31c30af2774d795facb1e2d367b1f25d'
@@ -55,10 +58,15 @@ function printWeatherCurrent(name ,lat, lon){
   })
 
   .then(function (data) {
-    console.log('data', data);
-
+    
     var date = dayjs();
-    var icon = data.weather[0].icon;
+
+    var iconImg = 'https://openweathermap.org/img/wn/'+ data.weather[0].icon +'@2x.png';
+    var icon = $('<img>');
+    icon.attr({
+    src: iconImg,
+    alt: data.weather[0].description});
+    icon.addClass('icon icon-today')
 
     var temp = data.main.temp;
     var wind = data.wind.speed;
@@ -71,14 +79,20 @@ function printWeatherCurrent(name ,lat, lon){
     var humidityEl = $("<li>");
     humidityEl.text('Humidity: ' + humidity + ' %');
 
+    $('.city-today-header').append(icon);
+    cityTodayName.text(name + '(' + date.format('MMM D, YYYY') + ')');
     $('#weather-today').append(tempEl, windEl, humidityEl );
-    cityTodayName.text(name + '(' + date.format('MMM D, YYYY') + ')' + icon);
+    $('#city-today').addClass('city-today-border');
+    
   })
 }
 
 function printWeatherFivedays(name ,lat, lon){
-  var fivedayApi = 'https://pro.openweathermap.org/data/2.5/forecast/dailyly?lat='  
-  + lat + '&lon=' + lon + 'b6b4200e6e6010fa96be131dbbc2b9eb&cnt=3'
+  $('#5day-cards').empty();
+  $('.5day-header').text('5-Day Forecast:');
+
+  var fivedayApi = 'https://api.openweathermap.org/data/2.5/forecast?lat='  
+  + lat + '&lon=' + lon + '&appid=b6b4200e6e6010fa96be131dbbc2b9eb'
 
   fetch(fivedayApi)
   .then(function (response) { 
@@ -89,17 +103,56 @@ function printWeatherFivedays(name ,lat, lon){
   })
 
   .then(function (data) {
-    console.log('data', data);
+    
+    var i=1;
+    var j=i*8-1;
+
+    for ( i = 1; i < 6; i++) {
+      $('.5day-header').text('5-Day Forecast:');
+
+      var cards = $('<card>');
+      cards.addClass('card five-cards col-12 col-md-2');
+      cards.attr('id',i);
+      $('#5day-cards').append(cards);
+
+      var dateElFive = $("<p>");
+      dateElFive.attr('id','date-five-header')
+      dateElFive.text(data.list[j].dt_txt);
+      
+      var fiveIconImg = 'https://openweathermap.org/img/wn/'+ data.list[j].weather[0].icon +'@2x.png';
+      var fiveIcon = $('<img>');
+      fiveIcon.attr({
+      src: fiveIconImg,
+      alt: data.list[j].weather[0].description});
+      fiveIcon.addClass('icon icon-fiveday')
+
+      var tempElFive = $("<p>");
+      tempElFive.text('Temp: ' + data.list[j].main.temp + ' °F');
+      var windElFive = $("<p>");
+      windElFive.text('Wind: ' + data.list[j].wind.speed + ' MPH');
+      var humidityElFive = $("<p>");
+      humidityElFive.text('Humidity: ' + data.list[j].main.humidity + ' %');
+
+      // var cardId = cards.attr('id');
+
+      // console.log('cardId',cardId)
+      // console.log('i',i)
+      // if (cardId === i){
+        cards.append(dateElFive, fiveIcon, tempElFive, windElFive, humidityElFive);
+      // }
+    }
+
+    
 });
 }
 
 
 function searchApiforlocation(cityName){
 
-  var loccationApi = 'http://api.openweathermap.org/geo/1.0/direct?q=' 
+  var locationApi = 'http://api.openweathermap.org/geo/1.0/direct?q=' 
   + cityName + '&limit=1&appid=4d617dbb74fca1df64ec1eb3ec9604f9'
 
-  fetch(loccationApi)
+  fetch(locationApi)
   .then(function (response) { 
     if (!response.ok) {
       throw response.json();
@@ -115,10 +168,7 @@ function searchApiforlocation(cityName){
 
     printWeatherCurrent(name ,lat, lon);
     printWeatherFivedays(name ,lat, lon);
-  })
-
-  
-  
+  }) 
 }
 
 function getCityName(event){  
@@ -136,5 +186,13 @@ function getCityName(event){
     }
 }
 
+
+
 PrintCityNames();
-cityForm.on('submit', getCityName);  
+cityForm.on('submit', getCityName); 
+
+cityListEl.on('click', ".btn-grey", function (event){
+  var cityName = $(event.target).attr('id');
+  searchApiforlocation(cityName);
+}
+);
